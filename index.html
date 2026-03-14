@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Carta</title>
+
+<style>
+
+body{
+margin:0;
+height:100vh;
+background:#1f2a38;
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:"Times New Roman",serif;
+overflow:hidden;
+}
+
+/* LLUVIA */
+
+.rain{
+position:absolute;
+width:2px;
+height:20px;
+background:rgba(255,255,255,0.4);
+animation:fall linear infinite;
+}
+
+@keyframes fall{
+0%{transform:translateY(-100vh)}
+100%{transform:translateY(100vh)}
+}
+
+/* CORAZONES */
+
+.heart{
+position:absolute;
+color:#ff4d6d;
+font-size:20px;
+animation:fall linear infinite;
+opacity:0.8;
+}
+
+/* BRILLOS */
+
+.sparkle{
+position:absolute;
+width:6px;
+height:6px;
+background:white;
+border-radius:50%;
+animation:spark 1s linear forwards;
+}
+
+@keyframes spark{
+0%{opacity:1; transform:scale(0)}
+100%{opacity:0; transform:scale(3)}
+}
+
+/* SOBRE */
+
+.envelope{
+position:relative;
+width:420px;
+height:260px;
+background:#e3e3e3;
+cursor:pointer;
+box-shadow:0 15px 40px rgba(0,0,0,0.6);
+border-radius:6px;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:22px;
+font-weight:bold;
+z-index:2;
+transition:opacity 1s, transform 1s;
+}
+
+.envelope.hide{
+opacity:0;
+transform:scale(0.6);
+pointer-events:none;
+}
+
+.flap{
+position:absolute;
+top:-140px;
+left:0;
+width:0;
+height:0;
+border-left:210px solid transparent;
+border-right:210px solid transparent;
+border-bottom:140px solid #d4d4d4;
+transform-origin:bottom;
+transition:1s;
+}
+
+.open .flap{
+transform:rotateX(180deg);
+}
+
+/* PAPEL */
+
+.paper{
+position:absolute;
+width:380px;
+height:200px;
+background:white;
+top:30px;
+border-radius:4px;
+box-shadow:0 10px 20px rgba(0,0,0,0.3);
+transition:1s;
+}
+
+.open .paper{
+transform:translateY(-120px);
+}
+
+/* CARTA */
+
+.letter{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%) scale(0);
+width:90%;
+max-width:1000px;
+height:80%;
+background:#fffdf7;
+padding:70px;
+border-radius:6px;
+box-shadow:0 25px 70px rgba(0,0,0,0.8);
+overflow:auto;
+transition:1s;
+
+background-image:
+linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+background-size:100% 34px;
+}
+
+.show{
+transform:translate(-50%,-50%) scale(1);
+}
+
+/* GATO */
+
+.cat{
+text-align:center;
+margin-bottom:20px;
+animation:catMove 2s infinite alternate;
+}
+
+@keyframes catMove{
+from{transform:translateY(0)}
+to{transform:translateY(-8px)}
+}
+
+.cat img{
+width:150px;
+}
+
+h2{
+text-align:center;
+}
+
+p{
+font-size:20px;
+line-height:34px;
+white-space:pre-line;
+}
+
+/* FIRMA */
+
+.signature{
+text-align:right;
+margin-top:40px;
+font-size:22px;
+}
+
+</style>
+</head>
+
+<body>
+
+<audio id="musica" loop>
+<source src="Stay on me.mp3" type="audio/mp3">
+</audio>
+
+<div class="envelope" id="sobre">
+Abrir carta
+<div class="flap"></div>
+<div class="paper"></div>
+</div>
+
+<div class="letter" id="carta">
+
+<div class="cat">
+<img src="gato.jfif">
+</div>
+
+<h2>Para ti…</h2>
+
+<p id="texto"></p>
+
+<div class="signature">
+Con sinceridad
+</div>
+
+</div>
+
+<script>
+
+/* LLUVIA */
+
+function rain(){
+let drop=document.createElement("div")
+drop.classList.add("rain")
+drop.style.left=Math.random()*100+"vw"
+drop.style.animationDuration=(Math.random()*2+2)+"s"
+document.body.appendChild(drop)
+
+setTimeout(()=>{drop.remove()},4000)
+}
+
+setInterval(rain,120)
+
+/* CORAZONES */
+
+function hearts(){
+let heart=document.createElement("div")
+heart.classList.add("heart")
+heart.innerHTML="🤍"
+heart.style.left=Math.random()*100+"vw"
+heart.style.animationDuration=(Math.random()*3+3)+"s"
+document.body.appendChild(heart)
+
+setTimeout(()=>{heart.remove()},6000)
+}
+
+setInterval(hearts,500)
+
+/* BRILLOS */
+
+function sparkle(){
+for(let i=0;i<20;i++){
+let s=document.createElement("div")
+s.classList.add("sparkle")
+
+s.style.left=Math.random()*window.innerWidth+"px"
+s.style.top=Math.random()*window.innerHeight+"px"
+
+document.body.appendChild(s)
+
+setTimeout(()=>{s.remove()},1000)
+}
+}
+
+/* TEXTO */
+
+let textoCarta=`Quería escribirte estas palabras porque siento que te debo una disculpa y también una explicación sincera de lo que pasó de mi lado. He estado pensando mucho en todo lo que ocurrió entre nosotros y en cómo se dieron las cosas. La verdad es que siempre valoré lo que había entre nosotros y por eso mismo no me gustaría que quedara una idea equivocada de lo que yo sentía o de por qué actué de cierta manera. Sinceramente yo tomé muy en serio tu última decisión y tu última petición. Recuerdo cuando dijiste que si yo hacía caso a chismes o comentarios de otras personas, entonces lo más eficaz o lo mejor sería que dejáramos de hablar. Yo tomé esas palabras tal como las dijiste. No fue una decisión que yo quisiera tomar por mi cuenta, sino que entendí que era lo que tú estabas pidiendo en ese momento. Por eso decidí hacerlo así. Pensé que era lo más correcto, lo más eficiente y lo más respetuoso hacia lo que tú mismo habías dicho. 
+También recuerdo cuando mencionaste que para ti una amistad no es hablar de dairio y siempre. Pero y siendote sincero, yo también tenía una manera distinta de ver las cosas. Desde mi forma de pensar, una amistad también implica compartir tiempo, salir, convivir, hablar más seguido o compartir momentos. Aun así, nunca fue mi intención minimizar lo que tú sentías o pensabas. También quiero pedirte disculpas por algo más. Hubo momentos en los que te dije o te pedí que me contestaras, y sinceramente tienes razón en eso. No soy nadie para obligar a alguien a hablar o a responder si no quiere hacerlo en ese momento. Si en algún momento te hice sentir presionado por eso, de verdad te pido una disculpa. También quiero ser sincero contigo en algo. Durante un tiempo tú me gustabas y me sigues gustando, y quizá por eso muchas cosas me costaba procesarlas con más calma o reaccionar de la mejor manera. Si en algún momento mi forma de actuar te hizo sentir mal durante este tiempo, lo siento de verdad. Estas palabras las escribo con sinceridad, porque quería que supieras cómo vi las cosas desde mi lado y porque, a pesar de todo, siempre valoré lo que compartimos.`
+let i=0
+
+function escribir(){
+if(i<textoCarta.length){
+document.getElementById("texto").innerHTML+=textoCarta.charAt(i)
+i++
+setTimeout(escribir,35)
+}
+}
+
+/* ABRIR SOBRE */
+
+let sobre=document.getElementById("sobre")
+let carta=document.getElementById("carta")
+let musica=document.getElementById("musica")
+
+sobre.onclick=function(){
+
+if(sobre.classList.contains("open")) return
+
+sobre.classList.add("open")
+
+musica.play()   // música inicia al hacer clic
+
+setTimeout(()=>{
+sobre.classList.add("hide")
+carta.classList.add("show")
+escribir()
+sparkle()
+},900)
+
+}
+
+</script>
+
+</body>
+</html>
